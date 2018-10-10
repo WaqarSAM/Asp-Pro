@@ -37,6 +37,9 @@ namespace Asp_Pro
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<StudentRegContext>(options =>
+               options.UseSqlServer(
+                   Configuration.GetConnectionString("PR")));
             services.AddDefaultIdentity<IdentityUser>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
