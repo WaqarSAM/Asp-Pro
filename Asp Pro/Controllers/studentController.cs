@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using Asp_Pro;
@@ -42,6 +43,12 @@ namespace Asp_Pro.Controllers
             S.Cv = "/WebData/Cv" + UniqueName + FileExtension;
             _ORM.Add(S);
             _ORM.SaveChanges();
+            string APIURL = "http://bulksms.com.pk/api/sms.php?username=923316125207&password=9178&sender=BrandName&mobile=923349931854&message= Welcome to our website.";
+            using (var APIClient = new HttpClient())
+            {
+                Task<HttpResponseMessage> RM = APIClient.GetAsync(APIURL);
+                Task<string> FinalRespone = RM.Result.Content.ReadAsStringAsync();
+            }
             ModelState.Clear();
 
             MailMessage Obj = new MailMessage();
