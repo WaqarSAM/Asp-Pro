@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Asp_Pro.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Asp_Pro.Models;
 
 namespace Asp_Pro
 {

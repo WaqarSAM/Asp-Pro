@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Asp Pro.Models
+namespace Asp_Pro.Models
 {
     public partial class Teacher
     {
