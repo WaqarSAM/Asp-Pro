@@ -49,6 +49,21 @@ namespace Asp_Pro.Controllers
             Student S = _ORM.Student.Where(m => m.Id == Id).FirstOrDefault<Student>();
             return View(S);
         }
+        [HttpGet]
+        public IActionResult EditStudent(int Id)
+        {
+
+            Student S = _ORM.Student.Where(m => m.Id == Id).FirstOrDefault<Student>();
+            return View(S);
+        }
+        [HttpPost]
+        public IActionResult EditStudent(Student S)
+        {
+            _ORM.Student.Update(S);
+            _ORM.SaveChanges();
+            //Student S = ORM.Student.Where(m => m.Id == Id).FirstOrDefault<Student>();
+            return RedirectToAction("viewlist");
+        }
 
 
 
