@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Asp_Pro;
 using Asp_Pro.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Asp_Pro.Controllers
@@ -11,9 +15,11 @@ namespace Asp_Pro.Controllers
     public class studentController : Controller
     {
         StudentRegContext _ORM = null;
-        public studentController(StudentRegContext ORM)
+        IHostingEnvironment _ENV = null;
+        public studentController(StudentRegContext ORM, IHostingEnvironment ENV)
         {
             _ORM = ORM;
+            _ENV = ENV;
 
 
         }
@@ -24,14 +30,50 @@ namespace Asp_Pro.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult AddStudent(Student S)
+        public IActionResult AddStudent(Student S, IFormFile Cv)
         {
+            string WwwRoot = _ENV.WebRootPath;
+            string FTPpath = WwwRoot + "/WebData/Cv";
+            string UniqueName = Guid.NewGuid().ToString();
+            string FileExtension = Path.GetExtension(Cv.FileName);
+            FileStream Fs = new FileStream(FTPpath + UniqueName + FileExtension, FileMode.Create);
+            Cv.CopyTo(Fs);
+            Fs.Close();
+            S.Cv = "/WebData/Cv" + UniqueName + FileExtension;
             _ORM.Add(S);
             _ORM.SaveChanges();
             ModelState.Clear();
-            ViewBag.message = "Record Added Successfully";
+
+            MailMessage Obj = new MailMessage();
+            Obj.From = new MailAddress("wa625775@gmail.com");
+            Obj.To.Add(new MailAddress(S.Email));
+            Obj.Subject = "Welcome to theta Solution:";
+            Obj.Body = "Dear" + S.Name + "<br ><br >" +
+            "Thanks for registration with Theta Solution";
+            Obj.IsBodyHtml = true;
+            if (!string.IsNullOrEmpty(S.Cv))
+            {
+                Obj.Attachments.Add(new Attachment(_ENV.WebRootPath + S.Cv));
+            }
+            SmtpClient SMTP = new SmtpClient();
+            SMTP.Host = "wa625775@gmail.com";
+            SMTP.Port = 587;
+            SMTP.EnableSsl = true;
+            SMTP.Credentials = new System.Net.NetworkCredential("wa625775@gmail.com", "programer");
+            try
+            {
+                SMTP.Send(Obj);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Mail has sent successfully";
+            }
+            ViewBag.Message = "New student has added to list";
             return View();
         }
+        
+
+
         [HttpGet]
         public IActionResult ViewList()
         {
@@ -78,6 +120,16 @@ namespace Asp_Pro.Controllers
                 result = "No";
             }
             return result;
+        }
+
+        public FileResult DownloadCV(string Path)
+        {
+            if (string.IsNullOrEmpty(Path))
+            {
+                ViewBag.Message = "Invalid Path";
+                return null;
+            }
+            return File(Path, new MimeSharp.Mime().Lookup(Path), DateTime.Now.ToString("ddMMyyyyhhmmss") + System.IO.Path.GetExtension(Path));
         }
 
 
