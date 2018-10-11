@@ -131,6 +131,24 @@ namespace Asp_Pro.Controllers
             }
             return File(Path, new MimeSharp.Mime().Lookup(Path), DateTime.Now.ToString("ddMMyyyyhhmmss") + System.IO.Path.GetExtension(Path));
         }
+        public string ShowAd()
+        {
+            string Ad = "";
+            Ad = "<img class='img img-responsive' src='http://lorempixel.com/400/400/sports/Theta-Solutions/'/>";
+            return Ad;
+        }
+        public string GetStudentsNames()
+        {
+            string Result = "";
+            var r = Request;
+            IList<Student> All = _ORM.Student.ToList<Student>();
+            Result += "<h1 class='alert alert-success'>Total Students: " + All.Count + "</h1>";
+            foreach (Student S in All)
+            {
+                Result += "<a href='/student/StudentDetail?Id=" + S.Id + "'><p><span class='glyphicon glyphicon-user'></span> " + S.Name + "</p></a> <a href='/student/deletestudent1?id=" + S.Id + "'><p><span class='glyphicon glyphicon-remove'></span> Delete </p></a>";
+            }
+            return Result;
+        }
 
 
 

@@ -1,15 +1,36 @@
 ﻿
 @model Student
+@using Asp_Pro.Controllers;
 <h1 class="alert alert-success">Detail of @Model.Name </h1>
-<div class="alert alert-success ">
-    <div class="alert alert-info">
-        <h1> <span class="glyphicon glyphicon-lock"></span><b>ID:</b>   @Model.Id</h1>
-        <p><span class="glyphicon glyphicon-user"></span><b>Name:</b>   @Model.Name</p>
-        <p><span class="glyphicon glyphicon-user"></span><b>FatherName:</b>   @Model.FatherName</p>
-        <p><span class="glyphicon glyphicon-bookmark"></span><b>Class:</b>   @Model.Class</p>
-        <p><span class="glyphicon glyphicon-book"></span><b>Department:</b>   @Model.Department</p>
-        <p><span class="glyphicon glyphicon-book"></span><b>Email:</b>   @Model.Email</p>
-</div>
-    </div>
-<a href="/student/ViewList"><span class="glyphicon glyphicon--arrow-left"></span></a>
+<div>
+<div class="col-md-6">
+    
+        <div>
+            <h1> <span class="glyphicon glyphicon-lock"></span><b>ID:</b>   @Model.Id</h1>
+            <p><span class="glyphicon glyphicon-user"></span><b>Name:</b>   @Model.Name</p>
+            <p><span class="glyphicon glyphicon-user"></span><b>FatherName:</b>   @Model.FatherName</p>
+            <p><span class="glyphicon glyphicon-bookmark"></span><b>Class:</b>   @Model.Class</p>
+            <p><span class="glyphicon glyphicon-book"></span><b>Department:</b>   @Model.Department</p>
+            <p><span class="glyphicon glyphicon-book"></span><b>Email:</b>   @Model.Email</p>
+        </div>
 
+        <div>
+            <a href="/Student/ViewList" class="btn btn-primary"><span class="glyphicon glyphicon--arrow-left"></span>Go Back to Student List</a>
+            <a href="/Student/DeleteStudent?Id=@Model.Id" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+            <a href="/Student/EditStudent?Id=@Model.Id" class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+        </div>
+    </div>
+    <div id="StudentsName" class="col-md-6">
+    </div>
+    </div>
+    <br /><br />
+    <div id="AdDiv">
+    </div>
+    @section Scripts{
+        <script>
+        $(function () {
+            $('#AdDiv').load("/Student/ShowAdd");
+            $('#StudentsName').load('@nameof(studentController.ViewList)');
+         });
+        </script>
+    }
