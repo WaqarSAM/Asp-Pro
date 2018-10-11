@@ -1,0 +1,43 @@
+﻿
+@model IList<Student>
+<br>
+<a href="/student/AddStudent" class="btn btn-warning">Add Student</a>
+
+<br>
+<h3> Total Students: @Model.Count()</h3>
+<form method="post">
+    <input type="text" name="name" id="name" placeholder="search by name" />
+    <input type="text" name="sclass" id="sclass" placeholder="search by class" />
+    <input type="text" name="department" id="department" placeholder="search by Department" />
+    <input type="submit" value="Search" />
+</form>>
+<table id="mytable" name="mytable" class="table table-bordered">
+    <thead>
+        <tr>
+            <td>ID:</td>
+            <td>Name:</td>
+            <td>Father Name:</td>
+            <td>Class:</td>
+            <td>Depratment:</td>
+            <td>Description</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Student S in Model)
+        {
+            <tr>
+                <td>@S.Id</td>
+                <td>@S.Name</td>
+                <td>@S.FatherName</td>
+                <td>@S.Class</td>
+                <td>@S.Department</td>
+                <td>
+                    <a href="/student/StudentDetail?Id=@S.Id" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-floppy-open"></span> Detail</a>
+                    <a href="/student/EditStudent?Id=@S.Id" class="btn btn-success btn-sm"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                    <a href="#" data-studentid="@S.Id" class="btn btn-danger DeleteStudent"><span class="glyphicon glyphicon-remove"></span> Delete</a>
+                    <a href="/student/DownloadCV?Id=@S.Id" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-arrow-down"></span> Download CV</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
