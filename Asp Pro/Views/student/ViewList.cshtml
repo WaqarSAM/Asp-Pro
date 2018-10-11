@@ -41,3 +41,33 @@
         }
     </tbody>
 </table>
+
+@section Scripts
+    {
+    <script>
+         $(function () {
+             $('.DeleteStudent').click(function () {
+                var clickedbutton = $(this);
+                var studentid = $(this).data("studentid");
+                $(this).text("Procession");
+                $.ajax({
+                    url: "/student/deletestudent",
+                    type: "POST",
+                    data: {
+                        Id: studentid,
+                        Email: "a@a.com"
+                    },
+                    complete: function (myresult) {
+                         if (myresult.responseText == "Yes") {
+                            clickedbutton.parent().parent().addClass("danger");
+                            clickedbutton.parent().parent().fadeOut(5000);
+
+                        } else {
+                            alert("Please try again");
+                        }
+                    }
+                });
+             });
+        });
+    </script>
+

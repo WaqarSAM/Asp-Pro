@@ -64,6 +64,21 @@ namespace Asp_Pro.Controllers
             //Student S = ORM.Student.Where(m => m.Id == Id).FirstOrDefault<Student>();
             return RedirectToAction("viewlist");
         }
+        public string deleteStudent(Student S)
+        {
+            string result = "";
+            try
+            {
+                _ORM.Student.Remove(S);
+                _ORM.SaveChanges();
+                result = "Yes";
+            }
+            catch (Exception e)
+            {
+                result = "No";
+            }
+            return result;
+        }
 
 
 
